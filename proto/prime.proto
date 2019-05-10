@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package proto;
+
+service PrimeService {
+  rpc Get(Request) returns(Response) {}
+  // Maybe stream all primes?
+};
+
+message Request {
+  int64 query = 1;
+};
+
+message Response {
+  int64 answer = 1;
+};
