@@ -17,7 +17,11 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"net/http"
 
 	pb "github.com/vagababov/maxprimesrv/proto"
 	"go.uber.org/zap"
@@ -35,4 +39,47 @@ func (ps *primeServer) Get(ctx context.Context, req *pb.Request) (*pb.Response, 
 	return &pb.Response{
 		Answer: a,
 	}, nil
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	query, err := readRequest(r.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Error parsing input: %v\r\n", err)
+		return
+	}
+	logger.Infof("Request: %#v", query)
+	resp := &pb.Response{
+		Answer: calcPrime(query.Query),
+	}
+
+	if *negate {
+		resp.Answer = -resp.Answer
+	}
+	fmt.Printf("Resp: %#v Negate: %v", resp, *negate)
+
+	logger.Infof("Response: %#v", resp)
+	stream, err := json.Marshal(resp)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Error formatting answer: %#v\r\n", err)
+		return
+	}
+	w.Write(stream)
+}
+
+func readRequest(r io.Reader) (*pb.Request, error) {
+	data, err := ioutil.ReadAll(r)
+	if err != nil {
+		logger.Errorw("error reading the body", zap.Error(err))
+		return nil, err
+	}
+	req := &pb.Request{}
+	err = json.Unmarshal(data, req)
+	if err != nil {
+		logger.Errorw("error unmarshaling json", zap.Error(err))
+		return nil, err
+	}
+	return req, nil
+
 }

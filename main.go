@@ -16,11 +16,7 @@ limitations under the License.
 package main
 
 import (
-	"encoding/json"
 	"flag"
-	"fmt"
-	"io"
-	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -40,42 +36,7 @@ const (
 	grpcPortVariableName = "GRPC_PORT"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	query, err := readRequest(r.Body)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "Error parsing input: %v\r\n", err)
-		return
-	}
-	logger.Infof("Request: %#v", query)
-	resp := &pb.Response{
-		Answer: calcPrime(query.Query),
-	}
-	logger.Infof("Response: %#v", resp)
-	stream, err := json.Marshal(resp)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprintf(w, "Error formatting answer: %#v\r\n", err)
-		return
-	}
-	w.Write(stream)
-}
-
-func readRequest(r io.Reader) (*pb.Request, error) {
-	data, err := ioutil.ReadAll(r)
-	if err != nil {
-		logger.Errorw("error reading the body", zap.Error(err))
-		return nil, err
-	}
-	req := &pb.Request{}
-	err = json.Unmarshal(data, req)
-	if err != nil {
-		logger.Errorw("error unmarshaling json", zap.Error(err))
-		return nil, err
-	}
-	return req, nil
-
-}
+var negate = flag.Bool("negate", false, "Negates the result for display")
 
 var logger *zap.SugaredLogger
 
