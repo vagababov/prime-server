@@ -5,12 +5,21 @@ metadata:
   namespace: default
 spec:
   template:
-    metadata:
-      name: http-prime-pos
     spec:
       containers:
         - image:  github.com/vagababov/maxprimesrv
           ports:
             - name: http1
               containerPort: 8080
+
+  traffic:
+  - tag: current
+    revisionName: http-prime-pos
+    percent: 50
+  - tag: candidate
+    revisionName: http-prime-neg
+    percent: 50
+  - tag: latest
+    latestRevision: true
+    percent: 0
 

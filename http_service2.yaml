@@ -5,6 +5,8 @@ metadata:
   namespace: default
 spec:
   template:
+    metadata:
+      name: http-prime-neg
     spec:
       containers:
         - image:  github.com/vagababov/maxprimesrv
