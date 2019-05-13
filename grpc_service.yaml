@@ -1,0 +1,14 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: grpc-prime
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+        - image:  github.com/vagababov/maxprimesrv
+          ports:
+            - name: h2c
+              containerPort: 8081
+

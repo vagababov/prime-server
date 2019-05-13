@@ -24,6 +24,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+// Request for the prime query.
 type Request struct {
 	Query                int64    `protobuf:"varint,1,opt,name=query,proto3" json:"query,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -63,6 +64,7 @@ func (m *Request) GetQuery() int64 {
 	return 0
 }
 
+// Answer for the prime query.
 type Response struct {
 	Answer               int64    `protobuf:"varint,1,opt,name=answer,proto3" json:"answer,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`

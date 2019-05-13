@@ -1,3 +1,18 @@
+/*
+Copyright 2019 Victor Agababov
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package main
 
 import (
@@ -14,7 +29,7 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
-	"github.com/vagababov/maxprimesrv/proto"
+	pb "github.com/vagababov/maxprimesrv/proto"
 )
 
 const (
@@ -33,7 +48,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	logger.Infof("Request: %#v", query)
-	resp := &proto.Response{
+	resp := &pb.Response{
 		Answer: calcPrime(query.Query),
 	}
 	logger.Infof("Response: %#v", resp)
@@ -46,13 +61,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	w.Write(stream)
 }
 
-func readRequest(r io.Reader) (*proto.Request, error) {
+func readRequest(r io.Reader) (*pb.Request, error) {
 	data, err := ioutil.ReadAll(r)
 	if err != nil {
 		logger.Errorw("error reading the body", zap.Error(err))
 		return nil, err
 	}
-	req := &proto.Request{}
+	req := &pb.Request{}
 	err = json.Unmarshal(data, req)
 	if err != nil {
 		logger.Errorw("error unmarshaling json", zap.Error(err))
@@ -93,6 +108,6 @@ func main() {
 	}
 	primeSrv := &primeServer{}
 	grpcServer := grpc.NewServer()
-	proto.RegisterPrimeServiceServer(grpcServer, primeSrv)
+	pb.RegisterPrimeServiceServer(grpcServer, primeSrv)
 	grpcServer.Serve(ls)
 }
