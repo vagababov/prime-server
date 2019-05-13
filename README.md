@@ -1,5 +1,8 @@
 # Example application for the Knative demonstration
 
+This is a demo application used to showcase deployment of a service to a
+Kubernetes cluster that uses Knative for serving using HTTP and gRPC as the L7
+protocols.
 
 ## Prior Art
 
