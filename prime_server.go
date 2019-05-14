@@ -68,7 +68,22 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	w.Write(stream)
 }
 
-func readRequest(r io.Reader) (*pb.Request, error) {
+func ReadResponse(r io.Reader) (*pb.Response, error) {
+	data, err := ioutil.ReadAll(r)
+	if err != nil {
+		logger.Errorw("error reading the body", zap.Error(err))
+		return nil, err
+	}
+	resp := &pb.Response{}
+	err = json.Unmarshal(data, req)
+	if err != nil {
+		logger.Errorw("error unmarshaling json", zap.Error(err))
+		return nil, err
+	}
+	return resp, nil
+}
+
+func ReadRequest(r io.Reader) (*pb.Request, error) {
 	data, err := ioutil.ReadAll(r)
 	if err != nil {
 		logger.Errorw("error reading the body", zap.Error(err))
@@ -81,5 +96,4 @@ func readRequest(r io.Reader) (*pb.Request, error) {
 		return nil, err
 	}
 	return req, nil
-
 }
