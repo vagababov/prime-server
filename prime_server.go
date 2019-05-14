@@ -75,7 +75,7 @@ func ReadResponse(r io.Reader) (*pb.Response, error) {
 		return nil, err
 	}
 	resp := &pb.Response{}
-	err = json.Unmarshal(data, req)
+	err = json.Unmarshal(data, resp)
 	if err != nil {
 		logger.Errorw("error unmarshaling json", zap.Error(err))
 		return nil, err
