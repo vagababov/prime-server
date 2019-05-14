@@ -9,7 +9,7 @@ spec:
       name: http-prime-neg
     spec:
       containers:
-        - image:  github.com/vagababov/maxprimesrv
+        - image:  github.com/vagababov/prime-server
           args: ["--negate", "true"]
           ports:
             - name: http1

@@ -25,7 +25,7 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
-	pb "github.com/vagababov/maxprimesrv/proto"
+	pb "github.com/vagababov/prime-server/proto"
 )
 
 const (

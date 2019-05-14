@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-        - image:  github.com/vagababov/maxprimesrv
+        - image:  github.com/vagababov/prime-server
           ports:
             - name: h2c
               containerPort: 8081

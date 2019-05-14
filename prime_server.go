@@ -23,7 +23,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	pb "github.com/vagababov/maxprimesrv/proto"
+	pb "github.com/vagababov/prime-server/proto"
 	"go.uber.org/zap"
 )
 
@@ -42,7 +42,7 @@ func (ps *primeServer) Get(ctx context.Context, req *pb.Request) (*pb.Response, 
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	query, err := readRequest(r.Body)
+	query, err := ReadRequest(r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Error parsing input: %v\r\n", err)
