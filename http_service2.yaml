@@ -1,12 +1,12 @@
 apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
-  name: http-prime
+  name: prime-api
   namespace: default
 spec:
   template:
     metadata:
-      name: http-prime-neg
+      name: prime-api-neg
     spec:
       containers:
         - image:  github.com/vagababov/prime-server

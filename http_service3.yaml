@@ -1,7 +1,7 @@
 apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
-  name: http-prime
+  name: prime-api
   namespace: default
 spec:
   template:
@@ -14,10 +14,10 @@ spec:
 
   traffic:
   - tag: current
-    revisionName: http-prime-pos
+    revisionName: prime-api-pos
     percent: 50
   - tag: candidate
-    revisionName: http-prime-neg
+    revisionName: prime-api-neg
     percent: 50
   - tag: latest
     latestRevision: true
