@@ -33,7 +33,7 @@ func calcPrime(maxNumber int64) int64 {
 	var x, y, n int64
 	nsqrt := math.Sqrt(float64(maxNumber))
 
-	isPrime := make([]bool, maxNumber)
+	isPrime := make([]bool, maxNumber+1)
 	for x = 1; float64(x) <= nsqrt; x++ {
 		for y = 1; float64(y) <= nsqrt; y++ {
 			n = 4*(x*x) + y*y

@@ -1,14 +1,28 @@
 apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
-  name: grpc-prime
+  name: prime-api
   namespace: default
 spec:
   template:
+    metadata:
+      name: prime-api-grpc
     spec:
       containers:
         - image:  github.com/vagababov/prime-server
           ports:
             - name: h2c
               containerPort: 8081
+      containerConcurrency: 15
+  traffic:
+  - revisionName: prime-api-pos
+    percent: 50
+  - revisionName: prime-api-neg
+    percent: 50
+  - tag: grpc-api
+    latestRevision: true
+    percent: 0
+  - tag: latest
+    latestRevision: true
+    percent: 0
 

@@ -5,19 +5,17 @@ metadata:
   namespace: default
 spec:
   template:
+    metadata:
+      name: prime-api-neg
     spec:
+      containerConcurrency: 15
       containers:
         - image:  github.com/vagababov/prime-server
-          ports:
-            - name: http1
-              containerPort: 8080
-
+          args: ["--negate", "true"]
   traffic:
-  - tag: current
-    revisionName: prime-api-pos
+  - revisionName: prime-api-pos
     percent: 50
-  - tag: candidate
-    revisionName: prime-api-neg
+  - revisionName: prime-api-neg
     percent: 50
   - tag: latest
     latestRevision: true

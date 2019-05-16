@@ -8,10 +8,8 @@ spec:
     metadata:
       name: prime-api-neg
     spec:
+      containerConcurrency: 15
       containers:
         - image:  github.com/vagababov/prime-server
           args: ["--negate", "true"]
-          ports:
-            - name: http1
-              containerPort: 8080
 
