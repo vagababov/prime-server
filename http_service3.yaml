@@ -14,9 +14,9 @@ spec:
           args: ["--negate", "true"]
   traffic:
   - revisionName: prime-api-pos
-    percent: 50
+    percent: 60
   - revisionName: prime-api-neg
-    percent: 50
+    percent: 40
   - tag: latest
     latestRevision: true
     percent: 0

@@ -20,7 +20,7 @@ spec:
   - revisionName: prime-api-neg
     percent: 50
   - tag: grpc-api
-    latestRevision: true
+    revisionName: prime-api-grpc
     percent: 0
   - tag: latest
     latestRevision: true
