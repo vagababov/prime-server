@@ -22,6 +22,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	pb "github.com/vagababov/prime-server/proto"
 	"go.uber.org/zap"
@@ -51,6 +52,42 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	logger.Infof("Request: %#v", query)
 	resp := &pb.Response{
 		Answer: calcPrime(query.Query),
+	}
+
+	if *negate {
+		resp.Answer = -resp.Answer
+	}
+	fmt.Printf("Resp: %#v Negate: %v", resp, *negate)
+
+	logger.Infof("Response: %#v", resp)
+	stream, err := json.Marshal(resp)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		fmt.Fprintf(w, "Error formatting answer: %#v\r\n", err)
+		return
+	}
+	w.Write(stream)
+}
+
+func qhandler(w http.ResponseWriter, r *http.Request) {
+	qs := r.URL.Query()
+	v := qs.Get("q")
+	if v == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, `The "q" query param is missing`)
+		return
+	}
+	rv, err := strconv.ParseInt(v, 10, 64)
+	if err != nil || rv <= 2 {
+		logger.Infof("Q=%s err: %v", v, err)
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, `The "q" query param value is not a valid number`)
+		return
+	}
+	logger.Infof("Request: %d", rv)
+
+	resp := &pb.Response{
+		Answer: calcPrime(rv),
 	}
 
 	if *negate {

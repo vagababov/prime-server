@@ -55,7 +55,9 @@ func main() {
 		port = defaultPort
 	}
 	logger.Infof("Starting prime generator on port %s", port)
-	go http.ListenAndServe(":"+port, http.HandlerFunc(handler))
+	http.Handle("/", http.HandlerFunc(handler))
+	http.Handle("/q", http.HandlerFunc(qhandler))
+	go http.ListenAndServe(":"+port, nil)
 
 	grpcPort := os.Getenv(grpcPortVariableName)
 	if grpcPort == "" {

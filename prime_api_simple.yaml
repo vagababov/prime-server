@@ -1,0 +1,11 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: p1
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+        - image:  github.com/vagababov/prime-server
+      containerConcurrency: 15
