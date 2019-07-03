@@ -33,11 +33,11 @@ The incorporated YAML files presume you have `ko` installed.
 
 To run HTTP service:
 
-`ko apply -f ./http-service.yaml`
+`ko apply -f ./http_service.yaml`
 
 To run gRPC service:
 
-`ko apply -f ./grpc-service.yaml`
+`ko apply -f ./grpc_service.yaml`
 
 
 ## How to make changes?
